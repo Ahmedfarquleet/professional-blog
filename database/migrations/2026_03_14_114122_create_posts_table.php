@@ -8,7 +8,6 @@ return new class extends Migration
 {
     public function up(): void
     {
-        // Add columns to users table
         Schema::table('users', function (Blueprint $table) {
             $table->text('bio')->nullable();
             $table->string('avatar')->nullable();
@@ -18,7 +17,6 @@ return new class extends Migration
             $table->boolean('is_admin')->default(false);
         });
 
-        // Posts table
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
@@ -33,21 +31,10 @@ return new class extends Migration
             $table->boolean('is_published')->default(false);
             $table->timestamp('published_at')->nullable();
             $table->timestamps();
-            
+
             $table->index(['is_published', 'published_at']);
         });
 
-        // Categories table
-        Schema::create('categories', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('slug')->unique();
-            $table->text('description')->nullable();
-            $table->string('color')->default('#3B82F6');
-            $table->timestamps();
-        });
-
-        // Pivot table for posts and categories
         Schema::create('category_post', function (Blueprint $table) {
             $table->id();
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
@@ -56,7 +43,6 @@ return new class extends Migration
             $table->unique(['category_id', 'post_id']);
         });
 
-        // Tags table
         Schema::create('tags', function (Blueprint $table) {
             $table->id();
             $table->string('name');
@@ -64,7 +50,6 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        // Pivot table for posts and tags
         Schema::create('post_tag', function (Blueprint $table) {
             $table->id();
             $table->foreignId('post_id')->constrained()->onDelete('cascade');
@@ -73,7 +58,6 @@ return new class extends Migration
             $table->unique(['post_id', 'tag_id']);
         });
 
-        // Comments table
         Schema::create('comments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('post_id')->constrained()->onDelete('cascade');
@@ -92,9 +76,8 @@ return new class extends Migration
         Schema::dropIfExists('post_tag');
         Schema::dropIfExists('tags');
         Schema::dropIfExists('category_post');
-        Schema::dropIfExists('categories');
         Schema::dropIfExists('posts');
-        
+
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn(['bio', 'avatar', 'website', 'twitter', 'github', 'is_admin']);
         });
