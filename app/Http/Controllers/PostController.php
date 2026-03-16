@@ -14,36 +14,36 @@ use Illuminate\Support\Str;
 class PostController extends Controller
 {
     public function home()
-    {
-        $featuredPost = Post::with('user', 'categories')
-            ->where('is_published', true)
-            ->latest('published_at')
-            ->first();
+{
+    $featuredPost = Post::with('user', 'categories')
+        ->where('is_published', true)
+        ->latest('published_at')
+        ->first();
 
-        $latestPosts = Post::with('user', 'categories')
-            ->where('is_published', true)
-            ->latest('published_at')
-            ->take(6)
-            ->get();
+    $latestPosts = Post::with('user', 'categories')
+        ->where('is_published', true)
+        ->latest('published_at')
+        ->take(6)
+        ->get();
 
-        $popularPosts = Post::with('user')
-            ->where('is_published', true)
-            ->orderBy('views', 'desc')
-            ->take(3)
-            ->get();
+    $popularPosts = Post::with('user')
+        ->where('is_published', true)
+        ->orderBy('views', 'desc')
+        ->take(3)
+        ->get();
 
-        $categories = Category::withCount(['posts' => function ($query) {
-                $query->where('is_published', true);
-            }])
-            ->get()
-            ->filter(function ($category) {
-                return $category->posts_count > 0;
-            })
-            ->sortByDesc('posts_count')
-            ->take(6);
+    $categories = Category::withCount(['posts' => function ($query) {
+            $query->where('is_published', true);
+        }])
+        ->get()
+        ->filter(function ($category) {
+            return $category->posts_count > 0;
+        })
+        ->sortByDesc('posts_count')
+        ->take(6);
 
-        return view('home', compact('featuredPost', 'latestPosts', 'popularPosts', 'categories'));
-    }
+    return view('home', compact('featuredPost', 'latestPosts', 'popularPosts', 'categories'));
+}
 
     public function index(Request $request)
     {
