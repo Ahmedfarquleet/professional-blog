@@ -3,12 +3,40 @@
 @section('content')
 
 @if(isset($featuredPost) && $featuredPost)
-@php
-    $featuredImageUrl = $featuredPost->featured_image
-        ? asset('storage/'.$featuredPost->featured_image)
-        : 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=1350&q=80';
-@endphp
+    @php
+        $featuredImageUrl = $featuredPost->featured_image
+            ? asset('storage/'.$featuredPost->featured_image)
+            : 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=1350&q=80';
+    @endphp
 
+    {{-- your current purple featured hero here --}}
+
+@else
+    <section class="relative overflow-hidden bg-gradient-to-br from-purple-900 via-purple-800 to-indigo-900 text-white">
+        <div class="max-w-7xl mx-auto px-6 py-20">
+            <span class="inline-block px-4 py-2 rounded-full bg-white/10 text-sm font-semibold tracking-wide uppercase">
+                Featured Story
+            </span>
+
+            <h1 class="mt-6 text-5xl font-extrabold leading-tight">
+                Welcome to BlogSpace
+            </h1>
+
+            <p class="mt-6 text-lg text-purple-100 max-w-2xl">
+                Discover stories, ideas, and perspectives from our community.
+            </p>
+
+            <div class="mt-10 flex gap-4">
+                <a href="{{ route('posts.index') }}" class="bg-white text-gray-900 px-6 py-3 rounded-lg font-semibold">
+                    Read Articles
+                </a>
+                <a href="{{ route('categories.index') }}" class="border border-white/30 px-6 py-3 rounded-lg font-semibold">
+                    Browse Categories
+                </a>
+            </div>
+        </div>
+    </section>
+@endif
 <section class="relative overflow-hidden bg-gradient-to-br from-indigo-950 via-purple-950 to-slate-950">
     <!-- Animated background elements -->
     <div class="absolute inset-0 opacity-20">
